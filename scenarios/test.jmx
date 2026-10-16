@@ -61,7 +61,7 @@
     &apos;--region&apos;, &apos;eu-west-2&apos;,
     &apos;--audience&apos;, &apos;grants-scoring-api&apos;,
     &apos;--signing-algorithm&apos;, &apos;RS256&apos;,
-    &apos;--duration-seconds&apos;, &apos;900&apos;,
+    &apos;--duration-seconds&apos;, &apos;899&apos;,
     &apos;--query&apos;, &apos;WebIdentityToken&apos;,
     &apos;--output&apos;, &apos;text&apos;
 ).start()
