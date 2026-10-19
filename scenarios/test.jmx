@@ -64,8 +64,7 @@ def command = [
     &apos;--signing-algorithm&apos;, &apos;RS256&apos;,
     &apos;--duration-seconds&apos;, &apos;899&apos;,
     &apos;--query&apos;, &apos;WebIdentityToken&apos;,
-    &apos;--output&apos;, &apos;text&apos;,
-    &apos;--cli-error-format&apos;, &apos;json&apos;
+    &apos;--output&apos;, &apos;text&apos;
 ]
 
 log.info(&quot;Requesting STS web identity token&quot;)
@@ -101,7 +100,7 @@ if (exitCode != 0 || !stdout || stdout == &apos;None&apos;) {
 
     throw new IllegalStateException(
         &quot;Failed to obtain STS web identity token (exit code ${exitCode}). &quot; +
-        &quot;See JMeter logs for AWS CLI diagnostics.&quot;
+        &quot;AWS CLI stderr: ${stderr ?: &apos;(empty)&apos;}&quot;
     )
 }
 
