@@ -56,26 +56,57 @@
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="filename"></stringProp>
           <stringProp name="parameters"></stringProp>
-          <stringProp name="script">def process = new ProcessBuilder(
+          <stringProp name="script">
+def command = [
     &apos;aws&apos;, &apos;sts&apos;, &apos;get-web-identity-token&apos;,
     &apos;--region&apos;, &apos;eu-west-2&apos;,
     &apos;--audience&apos;, &apos;grants-scoring-api&apos;,
     &apos;--signing-algorithm&apos;, &apos;RS256&apos;,
     &apos;--duration-seconds&apos;, &apos;899&apos;,
     &apos;--query&apos;, &apos;WebIdentityToken&apos;,
-    &apos;--output&apos;, &apos;text&apos;
-).start()
+    &apos;--output&apos;, &apos;text&apos;,
+    &apos;--cli-error-format&apos;, &apos;json&apos;
+]
 
-def token = process.inputStream.text.trim()
-def exitCode = process.waitFor()
+log.info(&quot;Requesting STS web identity token&quot;)
 
-if (exitCode != 0 || !token) {
+def process = new ProcessBuilder(command).start()
+
+// Read both streams concurrently to avoid blocking the process.
+def stdoutFuture = java.util.concurrent.CompletableFuture.supplyAsync {
+    process.inputStream.getText(&apos;UTF-8&apos;)
+}
+
+def stderrFuture = java.util.concurrent.CompletableFuture.supplyAsync {
+    process.errorStream.getText(&apos;UTF-8&apos;)
+}
+
+def finished = process.waitFor(30, java.util.concurrent.TimeUnit.SECONDS)
+
+if (!finished) {
+    process.destroyForcibly()
     throw new IllegalStateException(
-        &quot;Failed to obtain STS web identity token&quot;
+        &apos;Timed out waiting for AWS STS after 30 seconds&apos;
     )
 }
 
-props.put(&apos;webIdentityToken&apos;, token)</stringProp>
+def exitCode = process.exitValue()
+def stdout = stdoutFuture.get(5, java.util.concurrent.TimeUnit.SECONDS).trim()
+def stderr = stderrFuture.get(5, java.util.concurrent.TimeUnit.SECONDS).trim()
+
+if (exitCode != 0 || !stdout || stdout == &apos;None&apos;) {
+    log.error(&quot;AWS STS token request failed. Exit code: ${exitCode}&quot;)
+    log.error(&quot;AWS CLI stderr: ${stderr ?: &apos;(empty)&apos;}&quot;)
+    log.error(&quot;AWS CLI stdout: ${stdout ?: &apos;(empty)&apos;}&quot;)
+
+    throw new IllegalStateException(
+        &quot;Failed to obtain STS web identity token (exit code ${exitCode}). &quot; +
+        &quot;See JMeter logs for AWS CLI diagnostics.&quot;
+    )
+}
+
+props.put(&apos;webIdentityToken&apos;, stdout)
+log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
           <stringProp name="scriptLanguage">groovy</stringProp>
           <stringProp name="TestPlan.comments">Get a web identity token</stringProp>
         </JSR223Sampler>
