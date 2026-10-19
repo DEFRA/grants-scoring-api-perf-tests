@@ -134,7 +134,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
             <collectionProp name="Arguments.arguments">
               <elementProp name="easting" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">12345</stringProp>
+                <stringProp name="Argument.value">409392</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">easting</stringProp>
@@ -142,7 +142,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
               </elementProp>
               <elementProp name="northing" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">54321</stringProp>
+                <stringProp name="Argument.value">424412</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">northing</stringProp>
@@ -220,7 +220,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
             <collectionProp name="Arguments.arguments">
               <elementProp name="easting" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">12345</stringProp>
+                <stringProp name="Argument.value">409392</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">easting</stringProp>
@@ -228,7 +228,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
               </elementProp>
               <elementProp name="northing" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">54321</stringProp>
+                <stringProp name="Argument.value">424412</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">northing</stringProp>
