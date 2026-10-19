@@ -3,6 +3,8 @@ set -x
 
 echo "run_id: $RUN_ID in $ENVIRONMENT"
 
+aws --version
+
 NOW=$(date +"%Y%m%d-%H%M%S")
 
 if [ -z "${JM_HOME}" ]; then
