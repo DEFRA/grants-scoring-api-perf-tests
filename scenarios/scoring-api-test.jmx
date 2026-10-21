@@ -38,10 +38,30 @@
             <stringProp name="Argument.desc">perf-test environment x-api key</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
+          <elementProp name="csv_path" elementType="Argument">
+            <stringProp name="Argument.name">csv_path</stringProp>
+            <stringProp name="Argument.value">${__P(csv_path)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="duration_seconds" elementType="Argument">
+            <stringProp name="Argument.name">duration_seconds</stringProp>
+            <stringProp name="Argument.value">${__P(duration_seconds,60)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="ramp_up_period_seconds" elementType="Argument">
+            <stringProp name="Argument.name">ramp_up_period_seconds</stringProp>
+            <stringProp name="Argument.value">${__P(ramp_up_period_seconds,30)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
+          <elementProp name="user_count" elementType="Argument">
+            <stringProp name="Argument.name">user_count</stringProp>
+            <stringProp name="Argument.value">${__P(user_count,10)}</stringProp>
+            <stringProp name="Argument.metadata">=</stringProp>
+          </elementProp>
         </collectionProp>
       </Arguments>
       <hashTree/>
-      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group" enabled="true">
+      <SetupThreadGroup guiclass="SetupThreadGroupGui" testclass="SetupThreadGroup" testname="setUp Thread Group">
         <intProp name="ThreadGroup.num_threads">1</intProp>
         <intProp name="ThreadGroup.ramp_time">1</intProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
@@ -52,7 +72,7 @@
         </elementProp>
       </SetupThreadGroup>
       <hashTree>
-        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Fetch service web identity access token">
+        <JSR223Sampler guiclass="TestBeanGUI" testclass="JSR223Sampler" testname="Fetch service web identity access token" enabled="true">
           <stringProp name="cacheKey">true</stringProp>
           <stringProp name="filename"></stringProp>
           <stringProp name="parameters"></stringProp>
@@ -110,13 +130,15 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
         </JSR223Sampler>
         <hashTree/>
       </hashTree>
-      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="scoring-api" enabled="true">
-        <intProp name="ThreadGroup.num_threads">1</intProp>
-        <intProp name="ThreadGroup.ramp_time">1</intProp>
+      <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="scoring-api">
+        <stringProp name="ThreadGroup.num_threads">${user_count}</stringProp>
+        <stringProp name="ThreadGroup.ramp_time">${ramp_up_period_seconds}</stringProp>
+        <stringProp name="ThreadGroup.duration">${duration_seconds}</stringProp>
         <boolProp name="ThreadGroup.same_user_on_next_iteration">true</boolProp>
+        <boolProp name="ThreadGroup.scheduler">true</boolProp>
         <stringProp name="ThreadGroup.on_sample_error">continue</stringProp>
         <elementProp name="ThreadGroup.main_controller" elementType="LoopController" guiclass="LoopControlPanel" testclass="LoopController" testname="Loop Controller">
-          <stringProp name="LoopController.loops">50</stringProp>
+          <intProp name="LoopController.loops">-1</intProp>
           <boolProp name="LoopController.continue_forever">false</boolProp>
         </elementProp>
       </ThreadGroup>
@@ -134,7 +156,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
             <collectionProp name="Arguments.arguments">
               <elementProp name="easting" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">409392</stringProp>
+                <stringProp name="Argument.value">${easting}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">easting</stringProp>
@@ -142,35 +164,35 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
               </elementProp>
               <elementProp name="northing" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">424412</stringProp>
+                <stringProp name="Argument.value">${northing}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">northing</stringProp>
               </elementProp>
               <elementProp name="sectorsIrrigated" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">true</boolProp>
-                <stringProp name="Argument.value">FOREST_NURSERY,TOP_AND_STONE_FRUIT</stringProp>
+                <stringProp name="Argument.value">${sectorsIrrigated}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">sectorsIrrigated</stringProp>
               </elementProp>
               <elementProp name="planning" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">Y</stringProp>
+                <stringProp name="Argument.value">${planning}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">planning</stringProp>
               </elementProp>
               <elementProp name="abstraction" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">Y</stringProp>
+                <stringProp name="Argument.value">${abstraction}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">abstraction</stringProp>
               </elementProp>
               <elementProp name="businessesUsingWater" elementType="HTTPArgument">
                 <boolProp name="HTTPArgument.always_encode">false</boolProp>
-                <stringProp name="Argument.value">TWO_TO_FOUR</stringProp>
+                <stringProp name="Argument.value">${businessesUsingWater}</stringProp>
                 <stringProp name="Argument.metadata">=</stringProp>
                 <boolProp name="HTTPArgument.use_equals">true</boolProp>
                 <stringProp name="Argument.name">businessesUsingWater</stringProp>
@@ -179,7 +201,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
             <collectionProp name="HeaderManager.headers">
               <elementProp name="" elementType="Header">
                 <stringProp name="Header.name">x-api-key</stringProp>
@@ -207,7 +229,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
-        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET validate Request">
+        <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="GET validate Request" enabled="true">
           <stringProp name="HTTPSampler.domain">${scoring_api_url}</stringProp>
           <stringProp name="HTTPSampler.port">${__P(port, 443)}</stringProp>
           <stringProp name="HTTPSampler.protocol">${__P(protocol, https)}</stringProp>
@@ -237,7 +259,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
           </elementProp>
         </HTTPSamplerProxy>
         <hashTree>
-          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager">
+          <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
             <collectionProp name="HeaderManager.headers">
               <elementProp name="" elementType="Header">
                 <stringProp name="Header.name">x-api-key</stringProp>
@@ -257,6 +279,7 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
           <ResponseAssertion guiclass="AssertionGui" testclass="ResponseAssertion" testname="Response Assertion" enabled="true">
             <collectionProp name="Asserion.test_strings">
               <stringProp name="49586">200</stringProp>
+              <stringProp name="51508">400</stringProp>
             </collectionProp>
             <stringProp name="Assertion.custom_message"></stringProp>
             <stringProp name="Assertion.test_field">Assertion.response_code</stringProp>
@@ -265,6 +288,19 @@ log.info(&quot;Successfully obtained STS web identity token&quot;)</stringProp>
           </ResponseAssertion>
           <hashTree/>
         </hashTree>
+        <CSVDataSet guiclass="TestBeanGUI" testclass="CSVDataSet" testname="CSV Data Set Config" enabled="true">
+          <stringProp name="filename">${csv_path}/scoringparameters.csv</stringProp>
+          <stringProp name="fileEncoding">UTF-8</stringProp>
+          <stringProp name="variableNames">easting,northing,sectorsIrrigated,businessesUsingWater,planning,abstraction</stringProp>
+          <boolProp name="ignoreFirstLine">true</boolProp>
+          <stringProp name="delimiter">,</stringProp>
+          <boolProp name="quotedData">true</boolProp>
+          <boolProp name="recycle">true</boolProp>
+          <boolProp name="stopThread">false</boolProp>
+          <stringProp name="shareMode">shareMode.all</stringProp>
+          <stringProp name="TestPlan.comments">Scoring API data</stringProp>
+        </CSVDataSet>
+        <hashTree/>
       </hashTree>
       <ResultCollector guiclass="SummaryReport" testclass="ResultCollector" testname="Summary Report" enabled="true">
         <boolProp name="ResultCollector.error_logging">false</boolProp>
